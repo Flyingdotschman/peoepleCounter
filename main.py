@@ -3,9 +3,11 @@ import sys
 import os
 from time import strftime
 
+
 def main():
     try:
         peopleCounter.main()
+        print("peopleCounter.main gestartet")
     except:
         try:
             with open('error.txt', 'a+') as f:

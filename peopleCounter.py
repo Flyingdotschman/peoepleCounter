@@ -201,9 +201,17 @@ def slideshow():
         if passthrough:
             if people_inside > max_people:
                 stop_signal = True
+                win.fill(255,0,0)
+                text_surface, text_rect = write_text("STOP", 300, int(info_screen.current_w/2),
+                                                     int(info_screen.current_h/2))
+                win.blit(text_surface, text_rect)
+                text_surface, text_rect = write_text(str(people_inside-max_people+1)+" Personen abwarten bitte", 50,
+                                                     int(info_screen.current_w / 4), int(info_screen.current_h / 2))
+                win.blit(text_surface, text_rect)
                 pass
             else:
                 pass
+            pygame.display.flip()
         else:
             if sdcard_exists and (counter % end_counter is 0):
                 counter = 0
@@ -286,6 +294,8 @@ def main():
     # Starte SD-Karten Thread
     sd_thread = threading.Thread(target=sdcard_check)
     sd_thread.start()
+    slideshow_thread = threading.Thread(target=slideshow)
+    slideshow_thread.start()
     sleep(1)
 
     # Lade letzten Bekannten Stand, wenn vorhanden
@@ -322,4 +332,6 @@ def main():
         if keys[pygame.K_KP1] or keys[pygame.K_1]:
             peopledecrease(0)
     pygame.quit()
+    sd_thread.running = False
+    slideshow_thread.running = False
     GPIO.cleanup()

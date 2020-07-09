@@ -30,6 +30,7 @@ max_people = 20
 people_inside = 0
 
 file_list = []
+image_list = []
 
 # Initialisiere Pygame und zeige Vollbildmodus
 pygame.init()
@@ -130,6 +131,28 @@ def load_imagetodisk():
             except:
                 pass
 
+
+def do_imagelist():
+    file_list = os.listdir("/home/pi/image/")
+    mm = pygame.display.list_modes()
+
+    for _ in file_list:
+        try:
+            img = pygame.image.load(image_list[current])
+            img = img.convert()
+            img = pygame.transform.rotate(img, 90)
+            img = pygame.transform.scale(img, max(modes))
+            image_list.append(img)
+        except pygame.error as err:
+            try:
+                with open('error.txt', 'a+') as f:
+                    e = strftime("%Y-%m-%d_%H_%M_%S") + " | IMG_TODISK_ERROR: " + repr(err) + "\r\n"
+                    f.write(e)
+                    f.flush()
+                    os.fsync(f.fileno())
+
+            except:
+                pass
 
 def prepare_slideshow():
     walktree("/mnt/sdcard/", addtolist)

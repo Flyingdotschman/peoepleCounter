@@ -60,7 +60,9 @@ def sdcard_check():
         if os.path.exists(std_dir) ^ sdcard_exists:
             if not sdcard_exists:
                 mount(std_dir, "/mnt/sdcard/")
-                sdcard_exists = True
+                prepare = threading.Thread(target=prepare_slideshow)
+                prepare.start()
+                #sdcard_exists = True
                 cd("/")
 
             else:
@@ -133,12 +135,12 @@ def load_imagetodisk():
 
 
 def do_imagelist():
-    file_list = os.listdir("/home/pi/image/")
+    files = os.listdir("/home/pi/image/")
     mm = pygame.display.list_modes()
 
-    for _ in file_list:
+    for current in files:
         try:
-            img = pygame.image.load(image_list[current])
+            img = pygame.image.load(files[current])
             img = img.convert()
             img = pygame.transform.rotate(img, 90)
             img = pygame.transform.scale(img, max(modes))
@@ -155,10 +157,16 @@ def do_imagelist():
                 pass
 
 def prepare_slideshow():
+    global  sdcard_exists
+
     walktree("/mnt/sdcard/", addtolist)
     load_imagetodisk()
-    t=threading.Thread(target=slideshow)
-    t.start()
+    do_imagelist()
+    sdcard_exists = True
+
+
+'''   t=threading.Thread(target=slideshow)
+t.start()'''
 
 
 def slideshow():

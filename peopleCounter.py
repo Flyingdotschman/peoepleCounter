@@ -51,7 +51,7 @@ pygame.mouse.set_visible(False)
 # Schaue nach ob SD Karte vorhanden ist und mounte sie ggf
 def sdcard_check():
     global sdcard_exists
-    " Starte Checking for SD Card"
+    print(" Starte Checking for SD Card")
     sdcard_exists = os.path.ismount("/mnt/sdcard/")
     std_dir = "nothing"
     t = threading.currentThread()

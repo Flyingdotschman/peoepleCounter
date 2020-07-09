@@ -5,7 +5,7 @@ from time import strftime
 
 def main():
     try:
-        peoeplCounter.main()
+        peopleCounter.main()
     except:
         try:
             with open('error.txt', 'a+') as f:

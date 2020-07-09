@@ -295,7 +295,7 @@ def peopleincrease(channel):
     global people_inside
     people_inside = people_inside + 1
     write_logfile("IN")
-    
+
 
 # Wird aufgerufen, wenn von den Sensoren ein gegangen Signal kommt
 def peopledecrease(channel):

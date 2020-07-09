@@ -15,7 +15,7 @@ from sh import cd
 import stat
 
 # Konfig
-small_window = False
+small_window = True
 FPS = 10
 
 pin_out = 20
@@ -51,6 +51,7 @@ pygame.mouse.set_visible(False)
 # Schaue nach ob SD Karte vorhanden ist und mounte sie ggf
 def sdcard_check():
     global sdcard_exists
+    " Starte Checking for SD Card"
     sdcard_exists = os.path.ismount("/mnt/sdcard/")
     std_dir = "nothing"
     t = threading.currentThread()
@@ -59,9 +60,11 @@ def sdcard_check():
             for f in os.listdir("/dev/"):
                 if "mmc" in f and "0" not in f and "p1" in f:
                     std_dir = "/dev/" + f
+                    print("SD Card gefunden")
         if os.path.exists(std_dir) ^ sdcard_exists:
             if not sdcard_exists:
                 mount(std_dir, "/mnt/sdcard/")
+                print("SD Card Mounted")
                 prepare = threading.Thread(target=prepare_slideshow)
                 prepare.start()
                 # sdcard_exists = True
@@ -72,6 +75,7 @@ def sdcard_check():
                     umount("/mnt/sdcard/")
                     sdcard_exists = False
                     no_sdcard_cleanup()
+                    print("SD Card Verloren")
                 except:
                     try:
                         with open('error.txt', 'a+') as f:
@@ -138,7 +142,7 @@ def load_imagetodisk():
 
 
 def do_imagelist():
-    files = os.listdir("/home/pi/image/")
+    files = os.listdir("/home/pi/images/")
     mm = pygame.display.list_modes()
 
     for current in files:
@@ -353,6 +357,7 @@ def main():
     global pin_reset
     global FPS
 
+    print("Starte Software Jetzt !!")
     # Starte SD-Karten Thread
     sd_thread = threading.Thread(target=sdcard_check)
     sd_thread.start()

@@ -157,7 +157,7 @@ def do_imagelist():
                 pass
 
 def prepare_slideshow():
-    global  sdcard_exists
+    global sdcard_exists
 
     walktree("/mnt/sdcard/", addtolist)
     load_imagetodisk()

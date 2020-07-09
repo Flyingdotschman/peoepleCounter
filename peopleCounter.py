@@ -190,7 +190,10 @@ def slideshow():
     global people_inside
     global image_list
 
+    num_images = len(image_list)
+    image_counter = 0
     slide_show_counter = 200
+    druchgang_counter = 20
     end_counter = slide_show_counter
     counter = slide_show_counter
     clock = pygame.time.Clock()
@@ -210,6 +213,7 @@ def slideshow():
                 win.blit(text_surface, text_rect)
 
             else:
+                stop_signal = False
                 win.fill(0, 255, 0)
                 text_surface, text_rect = write_text("Herzlich", 180, int(info_screen.current_w / 8),
                                                      int(info_screen.current_h / 2))
@@ -233,8 +237,13 @@ def slideshow():
                 win.blit(text_surface, text_rect)
 
             pygame.display.flip()
+            counter = 0
+            end_counter = druchgang_counter
         else:
             if sdcard_exists and (counter % end_counter is 0):
+                win.blit(image_list[image_counter], 0, 0)
+                pygame.display.flip()
+                image_counter = (image_counter + 1) % num_images
                 counter = 0
                 end_counter = slide_show_counter
         if not stop_signal:
@@ -285,13 +294,45 @@ def save_reset_file():
 def peopleincrease(channel):
     global people_inside
     people_inside = people_inside + 1
-
+    write_logfile("IN")
+    
 
 # Wird aufgerufen, wenn von den Sensoren ein gegangen Signal kommt
 def peopledecrease(channel):
     global people_inside
     if people_inside > 0:
         people_inside = people_inside - 1
+    write_logfile("OUT")
+
+
+def write_logfile(name):
+    global sdcard_exists
+    global people_inside
+    global max_people
+
+    if sdcard_exists:
+        if name is "IN":
+            try:
+                with open('/mnt/sdcard/log.txt', 'a+') as f:
+                    e = "{0}, {1}, {2}, {3};\n".format(strftime("%Y-%m-%-d %H:%M:%S"), str(+1), str(people_inside),
+                                                       str(max_people))
+                    f.write(e)
+                    f.flush()
+                    os.fsync(f.fileno())
+
+            except:
+                pass
+        else:
+            try:
+                with open('/mnt/sdcard/log.txt', 'a+') as f:
+                    e = "{0}, {1}, {2}, {3};\n".format(strftime("%Y-%m-%-d %H:%M:%S"), str(-1), str(people_inside),
+                                                       str(max_people))
+                    f.write(e)
+                    f.flush()
+                    os.fsync(f.fileno())
+
+            except:
+                pass
 
 
 def arduino_reset():

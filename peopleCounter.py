@@ -32,6 +32,8 @@ people_inside = 0
 file_list = []
 image_list = []
 
+passthrough = False
+
 # Initialisiere Pygame und zeige Vollbildmodus
 pygame.init()
 info_screen = pygame.display.Info()
@@ -62,13 +64,14 @@ def sdcard_check():
                 mount(std_dir, "/mnt/sdcard/")
                 prepare = threading.Thread(target=prepare_slideshow)
                 prepare.start()
-                #sdcard_exists = True
+                # sdcard_exists = True
                 cd("/")
 
             else:
                 try:
                     umount("/mnt/sdcard/")
                     sdcard_exists = False
+                    no_sdcard_cleanup()
                 except:
                     try:
                         with open('error.txt', 'a+') as f:
@@ -148,13 +151,14 @@ def do_imagelist():
         except pygame.error as err:
             try:
                 with open('error.txt', 'a+') as f:
-                    e = strftime("%Y-%m-%d_%H_%M_%S") + " | IMG_TODISK_ERROR: " + repr(err) + "\r\n"
+                    e = strftime("%Y-%m-%d_%H_%M_%S") + " | IMG_TOLIST_ERROR: " + repr(err) + "\r\n"
                     f.write(e)
                     f.flush()
                     os.fsync(f.fileno())
 
             except:
                 pass
+
 
 def prepare_slideshow():
     global sdcard_exists
@@ -169,36 +173,43 @@ def prepare_slideshow():
 t.start()'''
 
 
+def no_sdcard_cleanup():
+    global image_list
+    global file_list
+    image_list = []
+    file_list = []
+
+
 def slideshow():
     global sdcard_exists
     global win
     global info_screen
     global FPS
+    global passthrough
+    global max_people
+    global people_inside
+    global image_list
 
-
-    image_list = os.listdir("/home/pi/image/")
-    num_images = len(image_list)
-    current = 0
-    modes = pygame.display.list_modes()
-    while sdcard_exists:
-        try:
-            img = pygame.image.load(image_list[current])
-            img = img.convert()
-            img = pygame.transform.rotate(img, 90)
-            img = pygame.transform.scale(img, max(modes))
-            win.blit(img, (0, 0))
-        except pygame.error as err:
-            try:
-                with open('error.txt', 'a+') as f:
-                    e = strftime("%Y-%m-%d_%H_%M_%S") + " | IMG_TODISK_ERROR: " + repr(err) + "\r\n"
-                    f.write(e)
-                    f.flush()
-                    os.fsync(f.fileno())
-
-            except:
+    slide_show_counter = 200
+    end_counter = slide_show_counter
+    counter = slide_show_counter
+    clock = pygame.time.Clock()
+    t = threading.currentThread()
+    stop_signal = False
+    while getattr(t, "running", True):
+        clock.tick(FPS)
+        if passthrough:
+            if people_inside > max_people:
+                stop_signal = True
                 pass
-        current = (current + 1) % num_images
-        sleep(waittime)
+            else:
+                pass
+        else:
+            if sdcard_exists and (counter % end_counter is 0):
+                counter = 0
+                end_counter = slide_show_counter
+        if not stop_signal:
+            counter = counter + 1
 
 
 # Funtion um Text auf den Screen zu zeichnen
@@ -279,8 +290,6 @@ def main():
 
     # Lade letzten Bekannten Stand, wenn vorhanden
     max_people, people_inside = load_reset_file()
-
-
 
     # Initialisiere GPIO Pins
 

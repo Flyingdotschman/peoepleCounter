@@ -201,16 +201,37 @@ def slideshow():
         if passthrough:
             if people_inside > max_people:
                 stop_signal = True
-                win.fill(255,0,0)
+                win.fill(255, 0, 0)
                 text_surface, text_rect = write_text("STOP", 300, int(info_screen.current_w/2),
                                                      int(info_screen.current_h/2))
                 win.blit(text_surface, text_rect)
                 text_surface, text_rect = write_text(str(people_inside-max_people+1)+" Personen abwarten bitte", 50,
                                                      int(info_screen.current_w / 4), int(info_screen.current_h / 2))
                 win.blit(text_surface, text_rect)
-                pass
+
             else:
-                pass
+                win.fill(0, 255, 0)
+                text_surface, text_rect = write_text("Herzlich", 180, int(info_screen.current_w / 8),
+                                                     int(info_screen.current_h / 2))
+                win.blit(text_surface, text_rect)
+                text_surface, text_rect = write_text("Willkommen", 180, int(info_screen.current_w / 4),
+                                                     int(info_screen.current_h / 2))
+                text_surface, text_rect = write_text("Noch", 100, int(info_screen.current_w * 2 / 5),
+                                                     int(info_screen.current_h / 2))
+                win.blit(text_surface, text_rect)
+                text_surface, text_rect = write_text(str(max_people - people_inside), 700,
+                                                     int(info_screen.current_w * 3 / 5),
+                                                     int(info_screen.current_h / 2))
+                win.blit(text_surface, text_rect)
+                tmp = "Person"
+                if (max_people - people_inside) > 1:
+                    tpm = "Personen"
+
+                text_surface, text_rect = write_text(tmp, 100,
+                                                     int(info_screen.current_w * 4 / 5),
+                                                     int(info_screen.current_h / 2))
+                win.blit(text_surface, text_rect)
+
             pygame.display.flip()
         else:
             if sdcard_exists and (counter % end_counter is 0):

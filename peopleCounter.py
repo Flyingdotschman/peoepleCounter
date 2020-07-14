@@ -88,6 +88,7 @@ def sdcard_check():
             else:
                 try:
                     umount("/mnt/sdcard/")
+                    std_dir = "nothing"
                     sdcard_exists = False
                     passthrough = True
                     no_sdcard_cleanup()

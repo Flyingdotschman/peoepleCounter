@@ -157,12 +157,13 @@ def do_imagelist():
     global image_list
 
     files = os.listdir("/home/pi/images/")
+    #files = os.path.join("/home/pi/images/", files)
     print("in images gefundene Dateien" + str(len(files)))
     mm = pygame.display.list_modes()
     count = 0
     for _ in files:
         try:
-            img = pygame.image.load(files[count])
+            img = pygame.image.load(os.path.join("/home/pi/images", files[count]))
             img = img.convert()
             img = pygame.transform.rotate(img, 90)
             img = pygame.transform.scale(img, max(modes))

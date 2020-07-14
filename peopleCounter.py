@@ -268,6 +268,9 @@ def slideshow():
     while getattr(t, "running", True):
         clock.tick(FPS)
         print("Laenge ImageListe: " + str(len(image_list)))
+        if loading_img:
+            passthrough = True
+            print("Loading image")
         if passthrough: # or not sdcard_exists or len(image_list) < 1:
             passthrough = False
             if people_inside >= max_people:

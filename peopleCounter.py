@@ -231,7 +231,7 @@ def slideshow():
         print("Laenge ImageListe: " + str(len(image_list)))
         if passthrough: # or not sdcard_exists or len(image_list) < 1:
             passthrough = False
-            if people_inside > max_people:
+            if people_inside >= max_people:
                 stop_signal = True
                 win.fill((255, 0, 0))
                 text_surface, text_rect = write_text("STOP", 300, int(info_screen.current_w/2),
@@ -266,7 +266,7 @@ def slideshow():
                 win.blit(text_surface, text_rect)
 
             pygame.display.flip()
-            counter = 0
+            counter = 1
 
             end_counter = druchgang_counter
         else:
@@ -279,7 +279,7 @@ def slideshow():
                 win.blit(img, img_rect)
                 pygame.display.flip()
                 image_counter = (image_counter + 1) % len(image_list)
-                counter = 0
+                counter = 1
                 end_counter = slide_show_counter
                 pygame.display.flip()
         if not stop_signal:

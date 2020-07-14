@@ -206,7 +206,7 @@ def image_resize(img):
             sx = info_screen.current_w
         else:
             sy = info_screen.current_h
-    return pygame.transform.scale(img, (sx, sy))
+    return pygame.transform.scale(img, (int(sx), int(sy)))
 
 
 def prepare_slideshow():

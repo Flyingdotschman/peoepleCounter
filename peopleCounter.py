@@ -37,11 +37,11 @@ passthrough = False
 # Initialisiere Pygame und zeige Vollbildmodus
 pygame.init()
 info_screen = pygame.display.Info()
+modes = pygame.display.list_modes()
 
 if small_window:
     win = pygame.display.set_mode((1200, 920))
 else:
-    modes = pygame.display.list_modes()
     win = pygame.display.set_mode(max(modes))
 
 pygame.display.set_caption("PeopleCounter_FGMeier")
@@ -155,7 +155,7 @@ def load_imagetodisk():
 
 def do_imagelist():
     global image_list
-
+    global modes
     files = os.listdir("/home/pi/images/")
     #files = os.path.join("/home/pi/images/", files)
     print("in images gefundene Dateien" + str(len(files)))

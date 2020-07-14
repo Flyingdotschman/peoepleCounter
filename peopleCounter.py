@@ -187,7 +187,7 @@ def do_imagelist():
 def image_resize(img):
     global info_screen
 
-    ix, iy = img.get_size
+    ix, iy = img.get_size()
     if ix > iy:
         scaler = info_screen.current_w/float(ix)
         sy = scaler * iy
@@ -200,7 +200,7 @@ def image_resize(img):
     else:
         scaler = info_screen.current_h / float(iy)
         sx = scaler * ix
-        if sx > info_screen.curren_w:
+        if sx > info_screen.current_w:
             scaler = info_screen.current_w / float(ix)
             sy = scaler * iy
             sx = info_screen.current_w

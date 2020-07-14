@@ -63,12 +63,24 @@ def sdcard_check():
                     print("SD Card gefunden")
         if os.path.exists(std_dir) ^ sdcard_exists:
             if not sdcard_exists:
-                mount(std_dir, "/mnt/sdcard/")
-                print("SD Card Mounted")
-                prepare = threading.Thread(target=prepare_slideshow)
-                prepare.start()
-                # sdcard_exists = True
-                cd("/")
+                try:
+                    mount(std_dir, "/mnt/sdcard/")
+                    print("SD Card Mounted")
+                    prepare = threading.Thread(target=prepare_slideshow)
+                    prepare.start()
+                    # sdcard_exists = True
+                    cd("/")
+                except:
+                    try:
+                        with open('error.txt', 'a+') as f:
+                            e = sys.exc_info()[0]
+                            e = strftime("%Y-%m-%d_%H_%M_%S") + " | SD_CARD_MOUNT_ERROR: " + repr(e) + "\r\n"
+                            f.write(e)
+                            f.flush()
+                            os.fsync(f.fileno())
+
+                    except:
+                        pass
 
             else:
                 try:

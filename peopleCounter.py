@@ -142,6 +142,8 @@ def load_imagetodisk():
 
 
 def do_imagelist():
+    global image_list
+
     files = os.listdir("/home/pi/images/")
     mm = pygame.display.list_modes()
     count = 0

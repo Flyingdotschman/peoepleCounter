@@ -212,14 +212,12 @@ def image_resize(img):
 
 def prepare_slideshow():
     global sdcard_exists
-    global loading_img
 
-    loading_img = True
     walktree("/mnt/sdcard/", addtolist)
     load_imagetodisk()
     do_imagelist()
     sdcard_exists = True
-    loading_img = False
+
 
 '''   t=threading.Thread(target=slideshow)
 t.start()'''
@@ -306,11 +304,11 @@ def slideshow():
                                                      int(info_screen.current_w * 4 / 5),
                                                      int(info_screen.current_h / 2))
                 win.blit(text_surface, text_rect)
-            if loading_img:
+          '''  if loading_img:
                 raduis_circle = 50
                 pygame.draw.circle(win, (255, 0, 0), (info_screen.current_w - raduis_circle * 2,
                                                       info_screen.current_h - raduis_circle * 2), raduis_circle)
-                passthrough = True
+                passthrough = True'''
             pygame.display.flip()
             counter = 1
 

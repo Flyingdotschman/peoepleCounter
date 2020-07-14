@@ -310,7 +310,7 @@ def slideshow():
                 raduis_circle = 50
                 pygame.draw.circle(win, (255, 0, 0), (info_screen.current_w - raduis_circle * 2,
                                                       info_screen.current_h - raduis_circle * 2), raduis_circle)
-
+                passthrough = True
             pygame.display.flip()
             counter = 1
 

@@ -209,7 +209,7 @@ def slideshow():
         if passthrough or not sdcard_exists:
             if people_inside > max_people:
                 stop_signal = True
-                win.fill(255, 0, 0)
+                win.fill((255, 0, 0))
                 text_surface, text_rect = write_text("STOP", 300, int(info_screen.current_w/2),
                                                      int(info_screen.current_h/2))
                 win.blit(text_surface, text_rect)
@@ -219,7 +219,7 @@ def slideshow():
 
             else:
                 stop_signal = False
-                win.fill(0, 255, 0)
+                win.fill((0, 255, 0))
                 text_surface, text_rect = write_text("Herzlich", 180, int(info_screen.current_w / 8),
                                                      int(info_screen.current_h / 2))
                 win.blit(text_surface, text_rect)

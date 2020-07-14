@@ -304,7 +304,7 @@ def slideshow():
                                                      int(info_screen.current_w * 4 / 5),
                                                      int(info_screen.current_h / 2))
                 win.blit(text_surface, text_rect)
-          '''  if loading_img:
+                '''  if loading_img:
                 raduis_circle = 50
                 pygame.draw.circle(win, (255, 0, 0), (info_screen.current_w - raduis_circle * 2,
                                                       info_screen.current_h - raduis_circle * 2), raduis_circle)

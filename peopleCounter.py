@@ -132,7 +132,7 @@ def load_imagetodisk():
             try:
                 with open('error.txt', 'a+') as f:
                     e = sys.exc_info()[0]
-                    e = strftime("%Y-%m-%d_%H_%M_%S") + " | IMG_TODISK_ERROR: " + repr(e) + "\r\n"
+                    e = strftime("%Y-%m-%d_%H_%M_%S") + " | IMG_TODISK_ERROR: " + repr(e) + repr(f) + "\r\n"
                     f.write(e)
                     f.flush()
                     os.fsync(f.fileno())
@@ -145,9 +145,10 @@ def do_imagelist():
     global image_list
 
     files = os.listdir("/home/pi/images/")
+    print("in images gefundene Dateien" + str(len(files)))
     mm = pygame.display.list_modes()
     count = 0
-    for current in files:
+    for _ in files:
         try:
             img = pygame.image.load(files[count])
             img = img.convert()

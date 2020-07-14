@@ -404,9 +404,12 @@ def main():
             peopleincrease(0)
         if keys[pygame.K_KP1] or keys[pygame.K_1]:
             peopledecrease(0)
-    pygame.quit()
+
     sd_thread.running = False
     slideshow_thread.running = False
+    sd_thread.join()
+    slideshow_thread.join()
+    pygame.quit()
     GPIO.cleanup()
 
 

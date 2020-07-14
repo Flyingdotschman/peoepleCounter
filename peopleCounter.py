@@ -204,6 +204,7 @@ def no_sdcard_cleanup():
     for i in range(len(files)):
         try:
             rm('-r', os.path.join('/home/pi/images/', files[i]))
+            print(str(i))
         except:
             try:
                 with open('error.txt', 'a+') as f:
@@ -406,6 +407,7 @@ def main():
     global pin_out
     global pin_reset
     global FPS
+    global passthrough
 
     print("Starte Software Jetzt !!")
     # Starte SD-Karten Thread
@@ -417,6 +419,8 @@ def main():
 
     # Lade letzten Bekannten Stand, wenn vorhanden
     max_people, people_inside = load_reset_file()
+    if max_people >= people_inside:
+        passthrough = True
 
     # Initialisiere GPIO Pins
 

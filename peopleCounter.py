@@ -12,6 +12,7 @@ import sys
 from sh import mount
 from sh import umount
 from sh import cd
+from sh import rm
 import stat
 
 # Konfig
@@ -51,6 +52,7 @@ pygame.mouse.set_visible(False)
 # Schaue nach ob SD Karte vorhanden ist und mounte sie ggf
 def sdcard_check():
     global sdcard_exists
+    global passthrough
     print(" Starte Checking for SD Card")
     sdcard_exists = os.path.ismount("/mnt/sdcard/")
     std_dir = "nothing"
@@ -86,6 +88,7 @@ def sdcard_check():
                 try:
                     umount("/mnt/sdcard/")
                     sdcard_exists = False
+                    passthrough = True
                     no_sdcard_cleanup()
                     print("SD Card Verloren")
                 except:
@@ -197,6 +200,9 @@ t.start()'''
 def no_sdcard_cleanup():
     global image_list
     global file_list
+    files = os.listdir("/home/pi/images/")
+    for i in files:
+        rm('-r', os.path.join('/home/pi/images/', files[i]))
     image_list = []
     file_list = []
 
@@ -223,7 +229,8 @@ def slideshow():
     while getattr(t, "running", True):
         clock.tick(FPS)
         print("Laenge ImageListe: " + str(len(image_list)))
-        if passthrough or not sdcard_exists or len(image_list) < 1:
+        if passthrough: # or not sdcard_exists or len(image_list) < 1:
+            passthrough = False
             if people_inside > max_people:
                 stop_signal = True
                 win.fill((255, 0, 0))
@@ -260,6 +267,7 @@ def slideshow():
 
             pygame.display.flip()
             counter = 0
+
             end_counter = druchgang_counter
         else:
             if sdcard_exists and (counter % end_counter is 0) and len(image_list) > 0:
@@ -316,15 +324,19 @@ def save_reset_file():
 # Wird aufgerufen, wenn von den Sensoren ein eingetroffen Signal kommt
 def peopleincrease(channel):
     global people_inside
+    global  passthrough
     people_inside = people_inside + 1
+    passthrough = True
     write_logfile("IN")
 
 
 # Wird aufgerufen, wenn von den Sensoren ein gegangen Signal kommt
 def peopledecrease(channel):
     global people_inside
+    global passthrough
     if people_inside > 0:
         people_inside = people_inside - 1
+        passthrough = True
     write_logfile("OUT")
 
 

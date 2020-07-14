@@ -191,7 +191,7 @@ def image_resize(img):
     if ix > iy:
         scaler = info_screen.current_w/float(ix)
         sy = scaler * iy
-        if sy > info_screen.curren_h:
+        if sy > info_screen.current_h:
             scaler = info_screen.current_h / float(iy)
             sx = scaler * ix
             sy = info_screen.current_h

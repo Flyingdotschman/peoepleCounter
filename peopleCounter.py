@@ -163,7 +163,7 @@ def do_imagelist():
     files = os.listdir("/home/pi/images/")
     #files = os.path.join("/home/pi/images/", files)
     print("in images gefundene Dateien" + str(len(files)))
-    mm = pygame.display.list_modes()
+    #mm = pygame.display.list_modes()
     count = 0
     for _ in files:
         try:

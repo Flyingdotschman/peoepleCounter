@@ -271,7 +271,12 @@ def slideshow():
             end_counter = druchgang_counter
         else:
             if sdcard_exists and (counter % end_counter is 0) and len(image_list) > 0:
-                win.blit(image_list[image_counter], (0, 0))
+                win.fill((0, 0, 0))
+                img = image_list[image_counter]
+                img_rect = img.get_rect()
+                img_size = img.get_size()
+                img_rect.center = (int(info_screen.current_w/2), int(info_screen.current_h/2))
+                win.blit(img, img_rect)
                 pygame.display.flip()
                 image_counter = (image_counter + 1) % len(image_list)
                 counter = 0

@@ -43,7 +43,7 @@ modes = pygame.display.list_modes()
 if small_window:
     win = pygame.display.set_mode((1200, 920))
 else:
-    win = pygame.display.set_mode(max(modes))
+    win = pygame.display.set_mode(max(modes), pygame.FULLSCREEN)
 
 pygame.display.set_caption("PeopleCounter_FGMeier")
 pygame.mouse.set_visible(False)

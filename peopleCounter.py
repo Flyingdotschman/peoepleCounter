@@ -201,8 +201,20 @@ def no_sdcard_cleanup():
     global image_list
     global file_list
     files = os.listdir("/home/pi/images/")
-    for i in files:
-        rm('-r', os.path.join('/home/pi/images/', files[i]))
+    for i in range(len(files)):
+        try:
+            rm('-r', os.path.join('/home/pi/images/', files[i]))
+        except:
+            try:
+                with open('error.txt', 'a+') as f:
+                    e = sys.exc_info()[0]
+                    e = strftime("%Y-%m-%d_%H_%M_%S") + " | IMAGE_REMOVE_ERROR: " + repr(e) + repr(f) + "\r\n"
+                    f.write(e)
+                    f.flush()
+                    os.fsync(f.fileno())
+
+            except:
+                pass
     image_list = []
     file_list = []
 

@@ -169,7 +169,7 @@ def do_imagelist():
             img = pygame.image.load(os.path.join("/home/pi/images", files[count]))
             img = img.convert()
             img = pygame.transform.rotate(img, 90)
-            img = pygame.transform.scale(img, max(modes))
+         #   img = pygame.transform.scale(img, max(modes))
             image_list.append(img)
         except pygame.error as err:
             try:

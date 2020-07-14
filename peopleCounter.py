@@ -34,6 +34,7 @@ file_list = []
 image_list = []
 
 passthrough = False
+loading_img = False
 
 # Initialisiere Pygame und zeige Vollbildmodus
 pygame.init()
@@ -211,12 +212,14 @@ def image_resize(img):
 
 def prepare_slideshow():
     global sdcard_exists
+    global loading_img
 
+    loading_img = True
     walktree("/mnt/sdcard/", addtolist)
     load_imagetodisk()
     do_imagelist()
     sdcard_exists = True
-
+    loading_img = False
 
 '''   t=threading.Thread(target=slideshow)
 t.start()'''
@@ -254,6 +257,7 @@ def slideshow():
     global max_people
     global people_inside
     global image_list
+    global loading_img
 
     #num_images = len(image_list)
     image_counter = 0
@@ -302,6 +306,10 @@ def slideshow():
                                                      int(info_screen.current_w * 4 / 5),
                                                      int(info_screen.current_h / 2))
                 win.blit(text_surface, text_rect)
+            if loading_img:
+                raduis_circle = 50
+                pygame.draw.circle(win, (255, 0, 0), (info_screen.current_w - raduis_circle * 2,
+                                                      info_screen.current_h - raduis_circle * 2), raduis_circle)
 
             pygame.display.flip()
             counter = 1

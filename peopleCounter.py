@@ -213,15 +213,13 @@ def image_resize(img):
 
 def prepare_slideshow():
     global sdcard_exists
-
+    global loading_img
+    loading_img = True
     walktree("/mnt/sdcard/", addtolist)
     load_imagetodisk()
     do_imagelist()
     sdcard_exists = True
-
-
-'''   t=threading.Thread(target=slideshow)
-t.start()'''
+    loading_img = False
 
 
 def no_sdcard_cleanup():
@@ -305,17 +303,19 @@ def slideshow():
                                                      int(info_screen.current_w * 4 / 5),
                                                      int(info_screen.current_h / 2))
                 win.blit(text_surface, text_rect)
-                '''  if loading_img:
-                raduis_circle = 50
-                pygame.draw.circle(win, (255, 0, 0), (info_screen.current_w - raduis_circle * 2,
-                                                      info_screen.current_h - raduis_circle * 2), raduis_circle)
-                passthrough = True'''
+                if loading_img:
+                    raduis_circle = 300
+                    pygame.draw.circle(win, (255, 0, 0), (info_screen.current_w - raduis_circle * 2,
+                                                          info_screen.current_h - raduis_circle * 2), raduis_circle)
+                    passthrough = True
             pygame.display.flip()
             counter = 1
 
             end_counter = druchgang_counter
         else:
             if sdcard_exists and (counter % end_counter is 0) and len(image_list) > 0:
+                if image_counter > (len(image_list) - 1):
+                    image_counter = 0
                 win.fill((0, 0, 0))
                 img = image_list[image_counter]
                 img = image_resize(img)

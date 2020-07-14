@@ -262,7 +262,7 @@ def write_text(text, size, x, y):
 
     font = pygame.font.Font('freesansbold.ttf', size)
     text_surface = font.render(text, True, (255, 255, 255))
-    text_surface = pygame.transfrom.rotate(text_surface, 90)
+    text_surface = pygame.transform.rotate(text_surface, 90)
     text_w, text_h = text_surface.get_size()
     ratio = (float(text_w) / float(text_h))
     if text_h > info_screen.current_h * 0.9:

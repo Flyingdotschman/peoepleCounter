@@ -332,6 +332,7 @@ def peopleincrease(channel):
     global  passthrough
     people_inside = people_inside + 1
     passthrough = True
+    save_reset_file()
     write_logfile("IN")
 
 
@@ -342,7 +343,8 @@ def peopledecrease(channel):
     if people_inside > 0:
         people_inside = people_inside - 1
         passthrough = True
-    write_logfile("OUT")
+        save_reset_file()
+        write_logfile("OUT")
 
 
 def write_logfile(name):

@@ -169,7 +169,7 @@ def do_imagelist():
             img = pygame.image.load(os.path.join("/home/pi/images", files[count]))
             img = img.convert()
             img = pygame.transform.rotate(img, 90)
-            img = image_resize(img)
+#            img = image_resize(img)
             image_list.append(img)
         except pygame.error as err:
             try:
@@ -311,6 +311,7 @@ def slideshow():
             if sdcard_exists and (counter % end_counter is 0) and len(image_list) > 0:
                 win.fill((0, 0, 0))
                 img = image_list[image_counter]
+                img = image_resize(img)
                 img_rect = img.get_rect()
                 img_size = img.get_size()
                 img_rect.center = (int(info_screen.current_w/2), int(info_screen.current_h/2))

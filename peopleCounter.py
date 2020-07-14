@@ -80,7 +80,7 @@ def sdcard_check():
                     try:
                         with open('error.txt', 'a+') as f:
                             e = sys.exc_info()[0]
-                            e = strftime("%Y-%m-%d_%H_%M_%S") + " | IMG_LOAD_ERROR: " + repr(e) + "\r\n"
+                            e = strftime("%Y-%m-%d_%H_%M_%S") + " | SD_CARD_UNMOUNT_ERROR: " + repr(e) + "\r\n"
                             f.write(e)
                             f.flush()
                             os.fsync(f.fileno())

@@ -144,10 +144,10 @@ def load_imagetodisk():
 def do_imagelist():
     files = os.listdir("/home/pi/images/")
     mm = pygame.display.list_modes()
-
+    count = 0
     for current in files:
         try:
-            img = pygame.image.load(files[current])
+            img = pygame.image.load(files[count])
             img = img.convert()
             img = pygame.transform.rotate(img, 90)
             img = pygame.transform.scale(img, max(modes))
@@ -162,6 +162,7 @@ def do_imagelist():
 
             except:
                 pass
+        count = count + 1
 
 
 def prepare_slideshow():
@@ -199,13 +200,13 @@ def slideshow():
     slide_show_counter = 200
     druchgang_counter = 20
     end_counter = slide_show_counter
-    counter = slide_show_counter
+    counter = 0
     clock = pygame.time.Clock()
     t = threading.currentThread()
     stop_signal = False
     while getattr(t, "running", True):
         clock.tick(FPS)
-        if passthrough:
+        if passthrough or not sdcard_exists:
             if people_inside > max_people:
                 stop_signal = True
                 win.fill(255, 0, 0)
@@ -250,6 +251,7 @@ def slideshow():
                 image_counter = (image_counter + 1) % num_images
                 counter = 0
                 end_counter = slide_show_counter
+                pygame.display.flip()
         if not stop_signal:
             counter = counter + 1
 
@@ -371,8 +373,8 @@ def main():
     # Initialisiere GPIO Pins
 
     GPIO.setmode(GPIO.BCM)
-    GPIO.setup(pin_out, GPIO.IN, pull_down=GPIO.PUD_DOWN)
-    GPIO.setup(pin_in, GPIO.IN, pull_down=GPIO.PUD_DOWN)
+    GPIO.setup(pin_out, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+    GPIO.setup(pin_in, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
     GPIO.setup(pin_reset, GPIO.OUT)
     GPIO.output(pin_reset, 1)
@@ -402,3 +404,7 @@ def main():
     sd_thread.running = False
     slideshow_thread.running = False
     GPIO.cleanup()
+
+
+if __name__ == '__main__':
+    main()

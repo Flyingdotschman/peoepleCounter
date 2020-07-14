@@ -219,7 +219,7 @@ def slideshow():
 
     #num_images = len(image_list)
     image_counter = 0
-    slide_show_counter = 200
+    slide_show_counter = 30
     druchgang_counter = 20
     end_counter = slide_show_counter
     counter = 0

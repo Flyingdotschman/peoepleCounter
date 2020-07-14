@@ -169,7 +169,7 @@ def do_imagelist():
             img = pygame.image.load(os.path.join("/home/pi/images", files[count]))
             img = img.convert()
             img = pygame.transform.rotate(img, 90)
-         #   img = pygame.transform.scale(img, max(modes))
+            img = image_resize(img)
             image_list.append(img)
         except pygame.error as err:
             try:
@@ -182,6 +182,31 @@ def do_imagelist():
             except:
                 pass
         count = count + 1
+
+
+def image_resize(img):
+    global info_screen
+
+    ix, iy = img.get_size
+    if ix > iy:
+        scaler = info_screen.current_w/float(ix)
+        sy = scaler * iy
+        if sy > info_screen.curren_h:
+            scaler = info_screen.current_h / float(iy)
+            sx = scaler * ix
+            sy = info_screen.current_h
+        else:
+            sx = info_screen.current_w
+    else:
+        scaler = info_screen.current_h / float(iy)
+        sx = scaler * ix
+        if sx > info_screen.curren_w:
+            scaler = info_screen.current_w / float(ix)
+            sy = scaler * iy
+            sx = info_screen.current_w
+        else:
+            sy = info_screen.current_h
+    return img.transform.scale(img, (sx, sy))
 
 
 def prepare_slideshow():

@@ -194,6 +194,7 @@ def do_imagelist():
             except:
                 pass
         count = count + 1
+        print("Lange imagelist: " + repr(len(image_list)))
 
 
 def image_resize(img):
@@ -225,11 +226,13 @@ def prepare_slideshow():
     global run_slideshow
     global loading_img
     loading_img = True
+    print("Loading images")
     walktree("/mnt/sdcard/", addtolist)
     load_imagetodisk()
     do_imagelist()
     run_slideshow = True
     loading_img = False
+    print("done loading images")
 
 
 def no_sdcard_cleanup():
@@ -279,9 +282,9 @@ def slideshow():
         clock.tick(FPS)
 
         if loading_img:
-            print("Laenge ImageListe: " + str(len(image_list)))
+         #   print("Laenge ImageListe: " + str(len(image_list)))
             passthrough = True
-            print("Loading image")
+          #  print("Loading image")
         if passthrough:  # or not sdcard_exists or len(image_list) < 1:
             passthrough = False
             if people_inside >= max_people:

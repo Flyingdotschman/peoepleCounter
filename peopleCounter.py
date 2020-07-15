@@ -352,6 +352,7 @@ def slideshow():
                 if image_counter > (len(image_list) - 1):
                     image_counter = 0
                 win.fill((0, 0, 0))
+                print("Loading Image: " + repr(image_list[image_counter]))
                 img = load_image2screen(image_list[image_counter])
                 #img = image_list[image_counter]
                 #img = image_resize(img)

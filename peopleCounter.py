@@ -141,7 +141,7 @@ def addtolist(file, extensions=['.png', '.jpg', '.jpeg', '.gif', '.bmp']):
     filename, ext = os.path.splitext(file)
     e = ext.lower()
     # Only add common image types to the list.
-    if e in extensions:
+    if e in extensions and filename[0] is not '.':
         print('Adding to list: ', file)
         file_list.append(file)
 #else:

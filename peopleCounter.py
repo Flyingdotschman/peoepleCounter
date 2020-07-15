@@ -141,7 +141,7 @@ def addtolist(file, extensions=['.png', '.jpg', '.jpeg', '.gif', '.bmp']):
     filename, ext = os.path.splitext(file)
     e = ext.lower()
     # Only add common image types to the list.
-    if e in extensions and filename[0] is not '.':
+    if e in extensions:
         print('Adding to list: ', file)
         file_list.append(file)
 #else:
@@ -155,8 +155,9 @@ def load_imagetodisk():
     print(repr(file_list))
     for f in file_list:
         try:
-            shutil.copy(f, '/home/pi/images/')
-            print("Kopiere " + repr(f) + " auf Festplatte, Datei ")
+            if f[0] is not '.':
+                shutil.copy(f, '/home/pi/images/')
+                print("Kopiere " + repr(f) + " auf Festplatte, Datei ")
         except:
             try:
                 with open('error.txt', 'a+') as f:

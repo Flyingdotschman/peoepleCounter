@@ -156,6 +156,7 @@ def load_imagetodisk():
     for f in file_list:
         try:
             shutil.copy(f, '/home/pi/images/')
+            print("Kopiere " + repr(f) + " auf Festplatte, Datei ")
         except:
             try:
                 with open('error.txt', 'a+') as f:

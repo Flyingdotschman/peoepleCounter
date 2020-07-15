@@ -130,6 +130,7 @@ def walktree(top, callback):
             # It's a file, call the callback function
             callback(pathname)
         else:
+            pass
             # Unknown file type, print a message
             #print('Skipping %s' % pathname)
 
@@ -143,8 +144,8 @@ def addtolist(file, extensions=['.png', '.jpg', '.jpeg', '.gif', '.bmp']):
     if e in extensions:
         print('Adding to list: ', file)
         file_list.append(file)
-    #else:
-        #print('Skipping: ', file, ' (NOT a supported image)')
+#else:
+#print('Skipping: ', file, ' (NOT a supported image)')
 
 
 # lade Bilder von SD Karte auf lokale Disk

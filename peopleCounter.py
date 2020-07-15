@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import pygame
-import time
+#import time
 
 from time import strftime
 from time import sleep

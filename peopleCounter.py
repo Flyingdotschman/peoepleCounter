@@ -35,6 +35,7 @@ image_list = []
 
 passthrough = False
 loading_img = False
+run_slideshow = False
 
 # Initialisiere Pygame und zeige Vollbildmodus
 pygame.init()
@@ -54,6 +55,7 @@ pygame.mouse.set_visible(False)
 def sdcard_check():
     global sdcard_exists
     global passthrough
+    global run_slideshow
     print(" Starte Checking for SD Card")
     sdcard_exists = os.path.ismount("/mnt/sdcard/")
     std_dir = "nothing"
@@ -71,7 +73,7 @@ def sdcard_check():
                     print("SD Card Mounted")
                     prepare = threading.Thread(target=prepare_slideshow)
                     prepare.start()
-                    # sdcard_exists = True
+                    sdcard_exists = True
                     cd("/")
                 except:
                     try:
@@ -91,9 +93,15 @@ def sdcard_check():
                     std_dir = "nothing"
                     sdcard_exists = False
                     passthrough = True
+                    run_slideshow = False
                     no_sdcard_cleanup()
                     print("SD Card Verloren")
                 except:
+                    std_dir = "nothing"
+                    sdcard_exists = False
+                    passthrough = True
+                    no_sdcard_cleanup()
+                    print("SD Card Verloren")
                     try:
                         with open('error.txt', 'a+') as f:
                             e = sys.exc_info()[0]
@@ -162,16 +170,16 @@ def do_imagelist():
     global image_list
     global modes
     files = os.listdir("/home/pi/images/")
-    #files = os.path.join("/home/pi/images/", files)
+    # files = os.path.join("/home/pi/images/", files)
     print("in images gefundene Dateien" + str(len(files)))
-    #mm = pygame.display.list_modes()
+    # mm = pygame.display.list_modes()
     count = 0
     for _ in files:
         try:
             img = pygame.image.load(os.path.join("/home/pi/images", files[count]))
             img = img.convert()
             img = pygame.transform.rotate(img, 90)
-#            img = image_resize(img)
+            #            img = image_resize(img)
             image_list.append(img)
         except pygame.error as err:
             try:
@@ -191,7 +199,7 @@ def image_resize(img):
 
     ix, iy = img.get_size()
     if ix > iy:
-        scaler = info_screen.current_w/float(ix)
+        scaler = info_screen.current_w / float(ix)
         sy = scaler * iy
         if sy > info_screen.current_h:
             scaler = info_screen.current_h / float(iy)
@@ -212,13 +220,13 @@ def image_resize(img):
 
 
 def prepare_slideshow():
-    global sdcard_exists
+    global run_slideshow
     global loading_img
     loading_img = True
     walktree("/mnt/sdcard/", addtolist)
     load_imagetodisk()
     do_imagelist()
-    sdcard_exists = True
+    run_slideshow = True
     loading_img = False
 
 
@@ -246,7 +254,7 @@ def no_sdcard_cleanup():
 
 
 def slideshow():
-    global sdcard_exists
+    global run_slideshow
     global win
     global info_screen
     global FPS
@@ -256,7 +264,7 @@ def slideshow():
     global image_list
     global loading_img
 
-    #num_images = len(image_list)
+    # num_images = len(image_list)
     image_counter = 0
     slide_show_counter = 30
     druchgang_counter = 20
@@ -271,15 +279,16 @@ def slideshow():
         if loading_img:
             passthrough = True
             print("Loading image")
-        if passthrough: # or not sdcard_exists or len(image_list) < 1:
+        if passthrough:  # or not sdcard_exists or len(image_list) < 1:
             passthrough = False
             if people_inside >= max_people:
                 stop_signal = True
                 win.fill((255, 0, 0))
-                text_surface, text_rect = write_text("STOP", 300, int(info_screen.current_w/2),
-                                                     int(info_screen.current_h/2))
+                text_surface, text_rect = write_text("STOP", 300, int(info_screen.current_w / 2),
+                                                     int(info_screen.current_h / 2))
                 win.blit(text_surface, text_rect)
-                text_surface, text_rect = write_text(str(people_inside-max_people+1)+" Personen abwarten bitte", 50,
+                text_surface, text_rect = write_text(str(people_inside - max_people + 1) + " Personen abwarten bitte",
+                                                     50,
                                                      int(info_screen.current_w / 4), int(info_screen.current_h / 2))
                 win.blit(text_surface, text_rect)
 
@@ -291,6 +300,7 @@ def slideshow():
                 win.blit(text_surface, text_rect)
                 text_surface, text_rect = write_text("Willkommen", 180, int(info_screen.current_w / 4),
                                                      int(info_screen.current_h / 2))
+                win.blit(text_surface, text_rect)
                 text_surface, text_rect = write_text("Noch", 100, int(info_screen.current_w * 2 / 5),
                                                      int(info_screen.current_h / 2))
                 win.blit(text_surface, text_rect)
@@ -300,7 +310,7 @@ def slideshow():
                 win.blit(text_surface, text_rect)
                 tmp = "Person"
                 if (max_people - people_inside) > 1:
-                    tpm = "Personen"
+                    tmp = "Personen"
 
                 text_surface, text_rect = write_text(tmp, 100,
                                                      int(info_screen.current_w * 4 / 5),
@@ -308,23 +318,22 @@ def slideshow():
                 win.blit(text_surface, text_rect)
                 if loading_img:
                     raduis_circle = 300
-                    pygame.draw.circle(win, (255, 0, 0), (info_screen.current_w - raduis_circle * 2,
-                                                          info_screen.current_h - raduis_circle * 2), raduis_circle)
+                    pygame.draw.circle(win, (255, 255, 0), (info_screen.current_w - raduis_circle * 2,
+                                                            raduis_circle), raduis_circle)
                     passthrough = True
             pygame.display.flip()
             counter = 1
 
             end_counter = druchgang_counter
         else:
-            if sdcard_exists and (counter % end_counter is 0) and len(image_list) > 0:
+            if run_slideshow and (counter % end_counter is 0) and len(image_list) > 0:
                 if image_counter > (len(image_list) - 1):
                     image_counter = 0
                 win.fill((0, 0, 0))
                 img = image_list[image_counter]
                 img = image_resize(img)
                 img_rect = img.get_rect()
-                img_size = img.get_size()
-                img_rect.center = (int(info_screen.current_w/2), int(info_screen.current_h/2))
+                img_rect.center = (int(info_screen.current_w / 2), int(info_screen.current_h / 2))
                 win.blit(img, img_rect)
                 pygame.display.flip()
                 image_counter = (image_counter + 1) % len(image_list)
@@ -378,7 +387,7 @@ def save_reset_file():
 # Wird aufgerufen, wenn von den Sensoren ein eingetroffen Signal kommt
 def peopleincrease(channel):
     global people_inside
-    global  passthrough
+    global passthrough
     people_inside = people_inside + 1
     passthrough = True
     save_reset_file()

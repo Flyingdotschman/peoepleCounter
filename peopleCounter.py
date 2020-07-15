@@ -155,9 +155,8 @@ def load_imagetodisk():
     print(repr(file_list))
     for f in file_list:
         try:
-            if f[0] is not '.':
-                shutil.copy(f, '/home/pi/images/')
-                print("Kopiere " + repr(f) + " auf Festplatte, Datei ")
+            shutil.copy(f, '/home/pi/images/')
+            print("Kopiere " + repr(f) + " auf Festplatte, Datei ")
         except:
             try:
                 with open('error.txt', 'a+') as f:
@@ -200,6 +199,19 @@ def do_imagelist():
         print("Lange imagelist: " + repr(len(image_list)))
 
 
+def do_diskfilelist():
+    global image_list
+    image_list = os.listdir("/home/pi/images/")
+      
+
+def load_image2screen(file):
+    img = pygame.image.load(os.path.join("/home/pi/images/", file))
+    img = img.convert()
+    img = pygame.transform.rotate(img, 90)
+    img = image_resize(img)
+    return img
+
+
 def image_resize(img):
     global info_screen
 
@@ -232,7 +244,8 @@ def prepare_slideshow():
     print("Loading images")
     walktree("/mnt/sdcard/", addtolist)
     load_imagetodisk()
-    do_imagelist()
+    #do_imagelist()
+    do_diskfilelist()
     run_slideshow = True
     loading_img = False
     print("done loading images")
@@ -339,8 +352,9 @@ def slideshow():
                 if image_counter > (len(image_list) - 1):
                     image_counter = 0
                 win.fill((0, 0, 0))
-                img = image_list[image_counter]
-                img = image_resize(img)
+                img = load_image2screen(image_list[image_counter])
+                #img = image_list[image_counter]
+                #img = image_resize(img)
                 img_rect = img.get_rect()
                 img_rect.center = (int(info_screen.current_w / 2), int(info_screen.current_h / 2))
                 win.blit(img, img_rect)

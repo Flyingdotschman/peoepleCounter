@@ -57,6 +57,7 @@ def sdcard_check():
     global passthrough
     global run_slideshow
     print(" Starte Checking for SD Card")
+    no_sdcard_cleanup()
     sdcard_exists = os.path.ismount("/mnt/sdcard/")
     std_dir = "nothing"
     t = threading.currentThread()
@@ -359,6 +360,7 @@ def slideshow():
                 img_rect = img.get_rect()
                 img_rect.center = (int(info_screen.current_w / 2), int(info_screen.current_h / 2))
                 win.blit(img, img_rect)
+                print("DONE Loading Image: " + repr(image_list[image_counter]))
                 pygame.display.flip()
                 image_counter = (image_counter + 1) % len(image_list)
                 counter = 1

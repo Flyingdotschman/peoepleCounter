@@ -143,7 +143,7 @@ def addtolist(file, extensions=['.png', '.jpg', '.jpeg', '.gif', '.bmp']):
     if e in extensions:
         print('Adding to list: ', file)
         file_list.append(file)
-    else:
+    #else:
         #print('Skipping: ', file, ' (NOT a supported image)')
 
 

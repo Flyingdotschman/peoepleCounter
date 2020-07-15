@@ -150,6 +150,8 @@ def addtolist(file, extensions=['.png', '.jpg', '.jpeg', '.gif', '.bmp']):
 # lade Bilder von SD Karte auf lokale Disk
 def load_imagetodisk():
     global file_list
+    print("Auf SD gefundene Bilder " + repr(len(file_list)))
+    print(repr(file_list))
     for f in file_list:
         try:
             shutil.copy(f, '/home/pi/images/')
@@ -275,8 +277,9 @@ def slideshow():
     stop_signal = False
     while getattr(t, "running", True):
         clock.tick(FPS)
-        print("Laenge ImageListe: " + str(len(image_list)))
+
         if loading_img:
+            print("Laenge ImageListe: " + str(len(image_list)))
             passthrough = True
             print("Loading image")
         if passthrough:  # or not sdcard_exists or len(image_list) < 1:

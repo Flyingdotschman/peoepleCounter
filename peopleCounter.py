@@ -464,6 +464,7 @@ def save_reset_file():
 def peopleincrease(channel):
     global people_inside
     global passthrough
+    print("Einer Rein")
     people_inside = people_inside + 1
     passthrough = True
     save_reset_file()
@@ -474,6 +475,7 @@ def peopleincrease(channel):
 def peopledecrease(channel):
     global people_inside
     global passthrough
+    print("Einer Raus")
     if people_inside > 0:
         people_inside = people_inside - 1
         passthrough = True

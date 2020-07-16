@@ -244,6 +244,7 @@ def prepare_slideshow():
     global run_slideshow
     global loading_img
     loading_img = True
+    showpeoeplescreen()
     print("Loading images")
     walktree("/mnt/sdcard/", addtolist)
     load_imagetodisk()

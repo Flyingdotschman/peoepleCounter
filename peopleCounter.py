@@ -80,15 +80,24 @@ def sdcard_check():
                     cd("/")
                 except:
                     try:
-                        with open('error.txt', 'a+') as f:
-                            e = sys.exc_info()[0]
-                            e = strftime("%Y-%m-%d_%H_%M_%S") + " | SD_CARD_MOUNT_ERROR: " + repr(e) + "\r\n"
-                            f.write(e)
-                            f.flush()
-                            os.fsync(f.fileno())
-
+                        umount("/mnt/sdcard/")
+                        std_dir = "nothing"
+                        sdcard_exists = False
+                        passthrough = True
+                        run_slideshow = False
+                        no_sdcard_cleanup()
+                        print("SD Card Verloren")
                     except:
-                        pass
+                        try:
+                            with open('error.txt', 'a+') as f:
+                                e = sys.exc_info()[0]
+                                e = strftime("%Y-%m-%d_%H_%M_%S") + " | SD_CARD_MOUNT_ERROR: " + repr(e) + "\r\n"
+                                f.write(e)
+                                f.flush()
+                                os.fsync(f.fileno())
+
+                        except:
+                            pass
 
             else:
                 try:
@@ -321,7 +330,7 @@ def slideshow():
             counter = 1
             end_counter = slide_show_counter
 
-            if not passthrough:
+            if not passthrough and run_slideshow and len(image_list) > 0:
                 win.fill((0, 0, 0))
                 win.blit(img, img_rect)
                 pygame.display.flip()

@@ -305,6 +305,7 @@ def slideshow():
             showpeoeplescreen()
 
         if run_slideshow and (counter % end_counter is 0) and len(image_list) > 0:
+            passthrough = False
             slideshow_running = True
             if image_counter > (len(image_list) - 1):
                 image_counter = 0

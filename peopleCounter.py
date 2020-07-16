@@ -23,7 +23,6 @@ pin_out = 20
 pin_in = 16
 pin_reset = 12
 
-end_counter = 200
 
 waittime = 20
 
@@ -288,7 +287,6 @@ def slideshow():
     global people_inside
     global image_list
     global loading_img
-    global end_counter
     global stop_signal
 
     slideshow_running = False
@@ -320,7 +318,13 @@ def slideshow():
             image_counter = (image_counter + 1) % len(image_list)
             counter = 1
             end_counter = slide_show_counter
+
+        if not passthrough:
             pygame.display.flip()
+        else:
+            passthrough = False
+            counter = 1
+
         if not stop_signal:
             counter = counter + 1
 
@@ -491,9 +495,8 @@ def showpeoeplescreen():
     global win
     global info_screen
     global stop_signal
-    global end_counter
+    global passthrough
 
-    druchgang_counter = 20
     if people_inside >= max_people:
         stop_signal = True
         win.fill((255, 0, 0))
@@ -533,11 +536,10 @@ def showpeoeplescreen():
             raduis_circle = 300
             pygame.draw.circle(win, (255, 255, 0), (info_screen.current_w - raduis_circle * 2,
                                                     raduis_circle), raduis_circle)
-
+    passthrough = True
     pygame.display.flip()
-    counter = 1
 
-    end_counter = druchgang_counter
+
 
 
 def write_logfile(name):

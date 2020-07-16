@@ -468,6 +468,7 @@ def peopleincrease(channel):
     people_inside = people_inside + 1
     passthrough = True
     save_reset_file()
+    showpeoeplescreen()
     write_logfile("IN")
 
 
@@ -480,6 +481,7 @@ def peopledecrease(channel):
         people_inside = people_inside - 1
         passthrough = True
         save_reset_file()
+        showpeoeplescreen()
         write_logfile("OUT")
 
 

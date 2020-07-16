@@ -23,6 +23,8 @@ pin_out = 20
 pin_in = 16
 pin_reset = 12
 
+end_counter = 200
+
 waittime = 20
 
 # Laufzeit Variablen
@@ -36,6 +38,7 @@ image_list = []
 passthrough = False
 loading_img = False
 run_slideshow = False
+stop_signal = False
 
 # Initialisiere Pygame und zeige Vollbildmodus
 pygame.init()
@@ -285,6 +288,53 @@ def slideshow():
     global people_inside
     global image_list
     global loading_img
+    global end_counter
+    global stop_signal
+
+    slideshow_running = False
+    image_counter = 0
+    slide_show_counter = 30
+    end_counter = slide_show_counter
+    counter = 0
+    clock = pygame.time.Clock()
+    t = threading.currentThread()
+
+    while getattr(t, "running", True):
+        clock.tick(FPS)
+        if not run_slideshow and slideshow_running:
+            slideshow_running = False
+            showpeoeplescreen()
+
+        if run_slideshow and (counter % end_counter is 0) and len(image_list) > 0:
+            slideshow_running = True
+            if image_counter > (len(image_list) - 1):
+                image_counter = 0
+            win.fill((0, 0, 0))
+            print("Loading Image: " + repr(image_list[image_counter]))
+            img = load_image2screen(image_list[image_counter])
+            img_rect = img.get_rect()
+            img_rect.center = (int(info_screen.current_w / 2), int(info_screen.current_h / 2))
+            win.blit(img, img_rect)
+            print("DONE Loading Image: " + repr(image_list[image_counter]))
+            pygame.display.flip()
+            image_counter = (image_counter + 1) % len(image_list)
+            counter = 1
+            end_counter = slide_show_counter
+            pygame.display.flip()
+        if not stop_signal:
+            counter = counter + 1
+
+
+def slideshow_old():
+    global run_slideshow
+    global win
+    global info_screen
+    global FPS
+    global passthrough
+    global max_people
+    global people_inside
+    global image_list
+    global loading_img
 
     # num_images = len(image_list)
     image_counter = 0
@@ -431,6 +481,61 @@ def peopledecrease(channel):
         write_logfile("OUT")
 
 
+def showpeoeplescreen():
+    global people_inside
+    global max_people
+    global win
+    global info_screen
+    global stop_signal
+    global end_counter
+
+    druchgang_counter = 20
+    if people_inside >= max_people:
+        stop_signal = True
+        win.fill((255, 0, 0))
+        text_surface, text_rect = write_text("STOP", 300, int(info_screen.current_w / 2),
+                                             int(info_screen.current_h / 2))
+        win.blit(text_surface, text_rect)
+        text_surface, text_rect = write_text(str(people_inside - max_people + 1) + " Personen abwarten bitte",
+                                             50,
+                                             int(info_screen.current_w / 4), int(info_screen.current_h / 2))
+        win.blit(text_surface, text_rect)
+
+    else:
+        stop_signal = False
+        win.fill((0, 255, 0))
+        text_surface, text_rect = write_text("Herzlich", 180, int(info_screen.current_w / 8),
+                                             int(info_screen.current_h / 2))
+        win.blit(text_surface, text_rect)
+        text_surface, text_rect = write_text("Willkommen", 180, int(info_screen.current_w / 4),
+                                             int(info_screen.current_h / 2))
+        win.blit(text_surface, text_rect)
+        text_surface, text_rect = write_text("Noch", 100, int(info_screen.current_w * 2 / 5),
+                                             int(info_screen.current_h / 2))
+        win.blit(text_surface, text_rect)
+        text_surface, text_rect = write_text(str(max_people - people_inside), 700,
+                                             int(info_screen.current_w * 3 / 5),
+                                             int(info_screen.current_h / 2))
+        win.blit(text_surface, text_rect)
+        tmp = "Person"
+        if (max_people - people_inside) > 1:
+            tmp = "Personen"
+
+        text_surface, text_rect = write_text(tmp, 100,
+                                             int(info_screen.current_w * 4 / 5),
+                                             int(info_screen.current_h / 2))
+        win.blit(text_surface, text_rect)
+        if loading_img:
+            raduis_circle = 300
+            pygame.draw.circle(win, (255, 255, 0), (info_screen.current_w - raduis_circle * 2,
+                                                    raduis_circle), raduis_circle)
+
+    pygame.display.flip()
+    counter = 1
+
+    end_counter = druchgang_counter
+
+
 def write_logfile(name):
     global sdcard_exists
     global people_inside
@@ -507,6 +612,7 @@ def main():
 
     clock = pygame.time.Clock()
     run = True
+    showpeoeplescreen()
     while run:
         clock.tick(FPS)
         for event in pygame.event.get():
@@ -519,10 +625,16 @@ def main():
         if keys[pygame.K_KP5] or keys[pygame.K_5]:
             people_inside = 0
 
-        if keys[pygame.K_KP7] or keys[pygame.K_7]:
+        if keys[pygame.K_KP9] or keys[pygame.K_9]:
             peopleincrease(0)
-        if keys[pygame.K_KP1] or keys[pygame.K_1]:
+        if keys[pygame.K_KP3] or keys[pygame.K_3]:
             peopledecrease(0)
+        if keys[pygame.K_KP7] or keys[pygame.K_7]:
+            max_people = max_people + 1
+            showpeoeplescreen()
+        if keys[pygame.K_KP1] or keys[pygame.K_1]:
+            max_people = max_people - 1
+            showpeoeplescreen()
 
     sd_thread.running = False
     slideshow_thread.running = False

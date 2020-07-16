@@ -546,7 +546,7 @@ def showpeoeplescreen():
                                              int(info_screen.current_h / 2))
         win.blit(text_surface, text_rect)
         if loading_img:
-            raduis_circle = 300
+            raduis_circle = 100
             pygame.draw.circle(win, (255, 255, 0), (info_screen.current_w - raduis_circle * 2,
                                                     raduis_circle), raduis_circle)
     passthrough = True

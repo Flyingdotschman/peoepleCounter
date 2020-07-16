@@ -545,6 +545,11 @@ def showpeoeplescreen():
                                              int(info_screen.current_w * 4 / 5),
                                              int(info_screen.current_h / 2))
         win.blit(text_surface, text_rect)
+        tmp = "max: " + str(max_people)
+        text_surface, text_rect = write_text(tmp, 100,
+                                             int(info_screen.current_w * 9 / 10),
+                                             int(info_screen.current_h / 2))
+        win.blit(text_surface, text_rect)
         if loading_img:
             raduis_circle = 100
             pygame.draw.circle(win, (255, 255, 0), (info_screen.current_w - raduis_circle * 2,

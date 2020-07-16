@@ -552,7 +552,7 @@ def write_logfile(name):
                     os.fsync(f.fileno())
 
             except:
-                pass
+                print("Fehler log_datei schreiben")
         else:
             try:
                 with open('/mnt/sdcard/log.txt', 'a+') as f:
@@ -563,7 +563,7 @@ def write_logfile(name):
                     os.fsync(f.fileno())
 
             except:
-                pass
+                print("Fehler log_datei schreiben")
 
 
 def arduino_reset():

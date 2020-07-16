@@ -624,7 +624,7 @@ def main():
             pygame.event.post(pygame.event.Event(pygame.QUIT))
         if keys[pygame.K_KP5] or keys[pygame.K_5]:
             people_inside = 0
-
+            showpeoeplescreen()
         if keys[pygame.K_KP9] or keys[pygame.K_9]:
             peopleincrease(0)
         if keys[pygame.K_KP3] or keys[pygame.K_3]:

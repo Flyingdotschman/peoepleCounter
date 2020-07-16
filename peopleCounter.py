@@ -86,7 +86,7 @@ def sdcard_check():
                         passthrough = True
                         run_slideshow = False
                         no_sdcard_cleanup()
-                        print("SD Card Verloren")
+                        print("SD Card Verloren und unmounted")
                     except:
                         try:
                             with open('error.txt', 'a+') as f:

@@ -309,7 +309,7 @@ def slideshow():
             slideshow_running = True
             if image_counter > (len(image_list) - 1):
                 image_counter = 0
-            win.fill((0, 0, 0))
+
             print("Loading Image: " + repr(image_list[image_counter]))
             img = load_image2screen(image_list[image_counter])
             img_rect = img.get_rect()
@@ -322,6 +322,7 @@ def slideshow():
             end_counter = slide_show_counter
 
             if not passthrough:
+                win.fill((0, 0, 0))
                 win.blit(img, img_rect)
                 pygame.display.flip()
             else:

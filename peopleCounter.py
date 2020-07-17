@@ -324,7 +324,7 @@ def slideshow():
             img_rect = img.get_rect()
             img_rect.center = (int(info_screen.current_w / 2), int(info_screen.current_h / 2))
 
-            print("DONE Loading Image: " + repr(image_list[image_counter]))
+            print("DONE Loading Image")
             pygame.display.flip()
             image_counter = (image_counter + 1) % len(image_list)
             counter = 1

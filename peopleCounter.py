@@ -653,11 +653,15 @@ def main():
             print("SD Thread alive")
         else:
             print("SD Thread DEAD")
+            sleep(10)
+            sd_thread.start()
 
         if slideshow_thread.is_alive():
             print("Slideshow Thread alive")
         else:
             print("Slideshow Thread DEAD")
+            sleep(10)
+            slideshow_thread.start()
 
         for event in pygame.event.get():
             if event.type is pygame.QUIT:

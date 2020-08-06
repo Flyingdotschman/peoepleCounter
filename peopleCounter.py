@@ -337,7 +337,11 @@ def slideshow():
 
             print("DONE Loading Image")
             pygame.display.flip()
-            image_counter = (image_counter + 1) % len(image_list)
+            if len(image_list) > 0:
+                image_counter = (image_counter + 1) % len(image_list)
+            else:
+                run_slideshow = False
+                print("Dodged the Bullet")
             counter = 1
             end_counter = slide_show_counter
 

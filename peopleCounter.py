@@ -576,7 +576,7 @@ def write_logfile(name):
                 print("Fehler log_datei schreiben")
         else:
             try:
-                with open('/mnt/sdcard/log.txt', 'a+') as f:
+                with open(log_string, 'a+') as f:
                     e = "{0}, {1}, {2}, {3};\n".format(strftime("%Y-%m-%-d %H:%M:%S"), str(-1), str(people_inside),
                                                        str(max_people))
                     f.write(e)

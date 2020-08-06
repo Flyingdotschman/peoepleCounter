@@ -215,10 +215,22 @@ def do_diskfilelist():
       
 
 def load_image2screen(file):
-    img = pygame.image.load(os.path.join("/home/pi/images/", file))
-    img = img.convert()
-    img = pygame.transform.rotate(img, 90)
-    img = image_resize(img)
+    try:
+        img = pygame.image.load(os.path.join("/home/pi/images/", file))
+        img = img.convert()
+        img = pygame.transform.rotate(img, 90)
+        img = image_resize(img)
+    except pygame.error as err:
+        try:
+            with open('error.txt', 'a+') as f:
+                e = strftime("%Y-%m-%d_%H_%M_%S") + " | IMG_TOLIST_ERROR: " + repr(err) + "\r\n"
+                f.write(e)
+                f.flush()
+                os.fsync(f.fileno())
+
+        except:
+            pass
+
     return img
 
 
@@ -636,6 +648,17 @@ def main():
     showpeoeplescreen()
     while run:
         clock.tick(FPS)
+
+        if sd_thread.is_alive():
+            print("SD Thread alive")
+        else:
+            print("SD Thread DEAD")
+
+        if slideshow_thread.is_alive():
+            print("Slideshow Thread alive")
+        else:
+            print("Slideshow Thread DEAD")
+
         for event in pygame.event.get():
             if event.type is pygame.QUIT:
                 run = False

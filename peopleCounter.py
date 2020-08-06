@@ -156,8 +156,6 @@ def addtolist(file, extensions=['.png', '.jpg', '.jpeg', '.gif', '.bmp']):
     if e in extensions:
         print('Adding to list: ', file)
         file_list.append(file)
-#else:
-#print('Skipping: ', file, ' (NOT a supported image)')
 
 
 # lade Bilder von SD Karte auf lokale Disk
@@ -257,7 +255,7 @@ def prepare_slideshow():
     print("Loading images")
     walktree("/mnt/sdcard/", addtolist)
     load_imagetodisk()
-    #do_imagelist()
+    # do_imagelist()
     do_diskfilelist()
     run_slideshow = True
     loading_img = False
@@ -366,9 +364,9 @@ def slideshow_old():
         clock.tick(FPS)
 
         if loading_img:
-         #   print("Laenge ImageListe: " + str(len(image_list)))
+
             passthrough = True
-          #  print("Loading image")
+
         if passthrough:  # or not sdcard_exists or len(image_list) < 1:
             passthrough = False
             if people_inside >= max_people:
@@ -422,8 +420,8 @@ def slideshow_old():
                 win.fill((0, 0, 0))
                 print("Loading Image: " + repr(image_list[image_counter]))
                 img = load_image2screen(image_list[image_counter])
-                #img = image_list[image_counter]
-                #img = image_resize(img)
+                # img = image_list[image_counter]
+                # img = image_resize(img)
                 img_rect = img.get_rect()
                 img_rect.center = (int(info_screen.current_w / 2), int(info_screen.current_h / 2))
                 win.blit(img, img_rect)
@@ -558,17 +556,16 @@ def showpeoeplescreen():
     pygame.display.flip()
 
 
-
-
 def write_logfile(name):
     global sdcard_exists
     global people_inside
     global max_people
 
     if sdcard_exists:
+        log_string = '/mnt/sdcard/' + strftime("%Y-%m-%d") + '.txt'
         if name is "IN":
             try:
-                with open('/mnt/sdcard/log.txt', 'a+') as f:
+                with open(log_string, 'a+') as f:
                     e = "{0}, {1}, {2}, {3};\n".format(strftime("%Y-%m-%-d %H:%M:%S"), str(+1), str(people_inside),
                                                        str(max_people))
                     f.write(e)

@@ -221,6 +221,7 @@ def load_image2screen(file):
         img = pygame.transform.rotate(img, 90)
         img = image_resize(img)
     except pygame.error as err:
+        img = []
         try:
             with open('error.txt', 'a+') as f:
                 e = strftime("%Y-%m-%d_%H_%M_%S") + " | IMG_TOLIST_ERROR: " + repr(err) + "\r\n"
@@ -654,6 +655,7 @@ def main():
         else:
             print("SD Thread DEAD")
             sleep(10)
+            sd_thread = threading.Thread(target=sdcard_check)
             sd_thread.start()
 
         if slideshow_thread.is_alive():
@@ -661,6 +663,7 @@ def main():
         else:
             print("Slideshow Thread DEAD")
             sleep(10)
+            slideshow_thread = threading.Thread(target=slideshow)
             slideshow_thread.start()
 
         for event in pygame.event.get():

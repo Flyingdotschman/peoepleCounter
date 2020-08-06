@@ -650,17 +650,13 @@ def main():
     while run:
         clock.tick(FPS)
 
-        if sd_thread.is_alive():
-            # print("SD Thread alive")
-        else:
+        if not sd_thread.is_alive():
             print("SD Thread DEAD")
             # sleep(10)
             sd_thread = threading.Thread(target=sdcard_check)
             sd_thread.start()
 
-        if slideshow_thread.is_alive():
-            # print("Slideshow Thread alive")
-        else:
+        if not slideshow_thread.is_alive():
             print("Slideshow Thread DEAD")
             # sleep(10)
             slideshow_thread = threading.Thread(target=slideshow)

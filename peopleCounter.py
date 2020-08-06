@@ -653,7 +653,7 @@ def main():
         if sd_thread.is_alive():
             # print("SD Thread alive")
         else:
-            # print("SD Thread DEAD")
+            print("SD Thread DEAD")
             # sleep(10)
             sd_thread = threading.Thread(target=sdcard_check)
             sd_thread.start()
@@ -661,7 +661,7 @@ def main():
         if slideshow_thread.is_alive():
             # print("Slideshow Thread alive")
         else:
-            # print("Slideshow Thread DEAD")
+            print("Slideshow Thread DEAD")
             # sleep(10)
             slideshow_thread = threading.Thread(target=slideshow)
             slideshow_thread.start()

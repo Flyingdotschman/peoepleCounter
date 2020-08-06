@@ -317,7 +317,7 @@ def slideshow():
     counter = 0
     clock = pygame.time.Clock()
     t = threading.currentThread()
-
+    showpeoeplescreen()
     while getattr(t, "running", True):
         clock.tick(FPS)
         if not run_slideshow and slideshow_running:

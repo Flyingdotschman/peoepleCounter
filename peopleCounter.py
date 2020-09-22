@@ -517,6 +517,27 @@ def peopledecrease(channel):
         write_logfile("OUT")
 
 
+def max_peopleincrease(channel):
+    global max_people
+    global passthrough
+    print("Einer darf MEHR Rein")
+    max_people = max_people + 1
+    passthrough = True
+    save_reset_file()
+    showpeoeplescreen()
+
+def max_peopledecrease(channel):
+    global max_people
+    global passthrough
+    print("Einer darf WENIGER Rein")
+    if max_people > 0:
+        max_people = max_people - 1
+        passthrough = True
+        save_reset_file()
+        showpeoeplescreen()
+
+
+
 def showpeoeplescreen():
     global people_inside
     global max_people
@@ -675,17 +696,16 @@ def main():
             pygame.event.post(pygame.event.Event(pygame.QUIT))
         if keys[pygame.K_KP5] or keys[pygame.K_5]:
             people_inside = 0
+            passthrough = True
             showpeoeplescreen()
         if keys[pygame.K_KP9] or keys[pygame.K_9]:
             peopleincrease(0)
         if keys[pygame.K_KP3] or keys[pygame.K_3]:
             peopledecrease(0)
         if keys[pygame.K_KP7] or keys[pygame.K_7]:
-            max_people = max_people + 1
-            showpeoeplescreen()
+            max_peopleincrease(0)
         if keys[pygame.K_KP1] or keys[pygame.K_1]:
-            max_people = max_people - 1
-            showpeoeplescreen()
+            max_peopledecrease(0)
 
     sd_thread.running = False
     slideshow_thread.running = False

@@ -346,7 +346,7 @@ def slideshow():
             end_counter = slide_show_counter
 
             if not passthrough and run_slideshow and len(image_list) > 0:
-                win.fill((0, 0, 0))
+                win.fill((69, 169, 238))
                 win.blit(img, img_rect)
                 pygame.display.flip()
             else:
@@ -526,6 +526,7 @@ def max_peopleincrease(channel):
     save_reset_file()
     showpeoeplescreen()
 
+
 def max_peopledecrease(channel):
     global max_people
     global passthrough
@@ -535,7 +536,6 @@ def max_peopledecrease(channel):
         passthrough = True
         save_reset_file()
         showpeoeplescreen()
-
 
 
 def showpeoeplescreen():
@@ -559,7 +559,7 @@ def showpeoeplescreen():
 
     else:
         stop_signal = False
-        win.fill((0, 255, 0))
+        win.fill((69, 169, 238))
         text_surface, text_rect = write_text("Herzlich", 180, int(info_screen.current_w / 8),
                                              int(info_screen.current_h / 2))
         win.blit(text_surface, text_rect)

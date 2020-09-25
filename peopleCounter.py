@@ -336,7 +336,7 @@ def slideshow():
             img_rect.center = (int(info_screen.current_w / 2), int(info_screen.current_h / 2))
 
             print("DONE Loading Image")
-            pygame.display.flip()
+            #pygame.display.flip()
             if len(image_list) > 0:
                 image_counter = (image_counter + 1) % len(image_list)
             else:
@@ -706,6 +706,8 @@ def main():
             max_peopleincrease(0)
         if keys[pygame.K_KP1] or keys[pygame.K_1]:
             max_peopledecrease(0)
+        if keys[pygame.K_KP0] or keys[pygame.K_0]:
+            arduino_reset()
 
     sd_thread.running = False
     slideshow_thread.running = False

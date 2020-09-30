@@ -52,6 +52,16 @@ else:
 pygame.display.set_caption("PeopleCounter_FGMeier")
 pygame.mouse.set_visible(False)
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pin_out, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(pin_in, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+GPIO.setup(pin_reset, GPIO.OUT)
+GPIO.output(pin_reset, 1)
+
+GPIO.add_event_detect(pin_out, GPIO.RISING, callback=peopledecrease)
+GPIO.add_event_detect(pin_in, GPIO.RISING, callback=peopleincrease)
+
 
 # Schaue nach ob SD Karte vorhanden ist und mounte sie ggf
 def sdcard_check():
@@ -706,13 +716,4 @@ def main():
 
 
 if __name__ == '__main__':
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(pin_out, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(pin_in, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
-    GPIO.setup(pin_reset, GPIO.OUT)
-    GPIO.output(pin_reset, 1)
-
-    GPIO.add_event_detect(pin_out, GPIO.RISING, callback=peopledecrease)
-    GPIO.add_event_detect(pin_in, GPIO.RISING, callback=peopleincrease)
     main()

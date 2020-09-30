@@ -632,14 +632,14 @@ def arduino_reset():
 
 # GPIO
 GPIO.setmode(GPIO.BCM)
-GPIO.setup(pin_out, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-GPIO.setup(pin_in, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(20, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(16, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
 
 GPIO.setup(pin_reset, GPIO.OUT)
 GPIO.output(pin_reset, 1)
 
-GPIO.add_event_detect(pin_out, GPIO.RISING, callback=peopledecrease)
-GPIO.add_event_detect(pin_in, GPIO.RISING, callback=peopleincrease)
+GPIO.add_event_detect(20, GPIO.RISING, callback=peopledecrease)
+GPIO.add_event_detect(16, GPIO.RISING, callback=peopleincrease)
 
 
 # Hier Startet das eigentliche Programm

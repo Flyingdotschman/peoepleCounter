@@ -670,6 +670,7 @@ def main():
     clock = pygame.time.Clock()
     run = True
     showpeoeplescreen()
+    arduino_reset()
     while run:
         clock.tick(FPS)
 

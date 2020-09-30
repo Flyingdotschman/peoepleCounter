@@ -581,7 +581,7 @@ def showpeoeplescreen():
                                              int(info_screen.current_w * 4 / 5),
                                              int(info_screen.current_h / 2))
         win.blit(text_surface, text_rect)
-        tmp = "max: " + str(max_people)
+        tmp = "max: " + str(people_inside) + "/" + str(max_people)
         text_surface, text_rect = write_text(tmp, 100,
                                              int(info_screen.current_w * 9 / 10),
                                              int(info_screen.current_h / 2))
@@ -656,18 +656,6 @@ def main():
     max_people, people_inside = load_reset_file()
     if max_people >= people_inside:
         passthrough = True
-
-    # Initialisiere GPIO Pins
-
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(pin_out, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(pin_in, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
-    GPIO.setup(pin_reset, GPIO.OUT)
-    GPIO.output(pin_reset, 1)
-
-    GPIO.add_event_detect(pin_out, GPIO.RISING, callback=peopledecrease)
-    GPIO.add_event_detect(pin_in, GPIO.RISING, callback=peopleincrease)
 
     clock = pygame.time.Clock()
     run = True

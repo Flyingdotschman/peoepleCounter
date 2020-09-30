@@ -1,6 +1,6 @@
 import RPi.GPIO as GPIO
 import pygame
-#import time
+# import time
 
 from time import strftime
 from time import sleep
@@ -22,7 +22,6 @@ FPS = 10
 pin_out = 20
 pin_in = 16
 pin_reset = 12
-
 
 waittime = 20
 
@@ -51,8 +50,6 @@ else:
 
 pygame.display.set_caption("PeopleCounter_FGMeier")
 pygame.mouse.set_visible(False)
-
-
 
 
 # Schaue nach ob SD Karte vorhanden ist und mounte sie ggf
@@ -146,7 +143,7 @@ def walktree(top, callback):
         else:
             pass
             # Unknown file type, print a message
-            #print('Skipping %s' % pathname)
+            # print('Skipping %s' % pathname)
 
 
 def addtolist(file, extensions=['.png', '.jpg', '.jpeg', '.gif', '.bmp']):
@@ -214,7 +211,7 @@ def do_imagelist():
 def do_diskfilelist():
     global image_list
     image_list = os.listdir("/home/pi/images/")
-      
+
 
 def load_image2screen(file):
     try:
@@ -338,7 +335,7 @@ def slideshow():
             img_rect.center = (int(info_screen.current_w / 2), int(info_screen.current_h / 2))
 
             print("DONE Loading Image")
-            #pygame.display.flip()
+            # pygame.display.flip()
             if len(image_list) > 0:
                 image_counter = (image_counter + 1) % len(image_list)
             else:
@@ -383,7 +380,6 @@ def slideshow_old():
         clock.tick(FPS)
 
         if loading_img:
-
             passthrough = True
 
         if passthrough:  # or not sdcard_exists or len(image_list) < 1:
@@ -634,6 +630,16 @@ def arduino_reset():
     GPIO.output(pin_reset, 1)
 
 
+# GPIO
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(pin_out, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+GPIO.setup(pin_in, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
+
+GPIO.setup(pin_reset, GPIO.OUT)
+GPIO.output(pin_reset, 1)
+
+GPIO.add_event_detect(pin_out, GPIO.RISING, callback=peopledecrease)
+GPIO.add_event_detect(pin_in, GPIO.RISING, callback=peopleincrease)
 
 
 # Hier Startet das eigentliche Programm
@@ -711,13 +717,4 @@ def main():
 
 
 if __name__ == '__main__':
-    GPIO.setmode(GPIO.BCM)
-    GPIO.setup(pin_out, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-    GPIO.setup(pin_in, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-
-    GPIO.setup(pin_reset, GPIO.OUT)
-    GPIO.output(pin_reset, 1)
-
-    GPIO.add_event_detect(pin_out, GPIO.RISING, callback=peopledecrease)
-    GPIO.add_event_detect(pin_in, GPIO.RISING, callback=peopleincrease)
     main()

@@ -16,7 +16,7 @@ from sh import rm
 import stat
 
 # Konfig
-small_window = True
+small_window = False
 FPS = 10
 
 pin_out = 20

@@ -311,7 +311,7 @@ def slideshow():
 
     slideshow_running = False
     image_counter = 0
-    slide_show_counter = 30
+    slide_show_counter = 300
     end_counter = slide_show_counter
     counter = 0
     clock = pygame.time.Clock()
@@ -345,7 +345,7 @@ def slideshow():
             end_counter = slide_show_counter
 
             if not passthrough and run_slideshow and len(image_list) > 0:
-                win.fill((69, 169, 238))
+                win.fill((0, 0, 0))
                 win.blit(img, img_rect)
                 pygame.display.flip()
             else:
